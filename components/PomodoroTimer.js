@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { Image, View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import tomatoFocus from "../assets/tomato-focus.png";
+import tomatoHappy from "../assets/tomato-happy.png";
 
 const PomodoroTimer = ({ workTime, breakTime }) => {
   const [isActive, setIsActive] = useState(false);
@@ -38,7 +40,12 @@ const PomodoroTimer = ({ workTime, breakTime }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, isWorkTime ? styles.tomato : styles.blue]}>
+      {isWorkTime ? (
+        <Image style={styles.tomatoImage} source={tomatoFocus} />
+      ) : (
+        <Image style={styles.tomatoImage} source={tomatoHappy} />
+      )}
       <Text style={styles.timerType}>
         {isWorkTime ? "Stay on focus" : "Break Time"}
       </Text>
@@ -48,12 +55,14 @@ const PomodoroTimer = ({ workTime, breakTime }) => {
           .padStart(2, "0")}
         :{(time % 60).toString().padStart(2, "0")}
       </Text>
-      <TouchableOpacity onPress={toggleTimer}>
-        <Text style={styles.button}>{isActive ? "Pause" : "Start"}</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={resetTimer}>
-        <Text style={styles.button}>Reset</Text>
-      </TouchableOpacity>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity onPress={toggleTimer}>
+          <Text style={styles.button}>{isActive ? "Pause" : "Start"}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={resetTimer}>
+          <Text style={styles.button}>Reset</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -61,24 +70,45 @@ const PomodoroTimer = ({ workTime, breakTime }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: "100%",
     justifyContent: "center",
     alignItems: "center",
   },
+  tomato: {
+    backgroundColor: "tomato",
+  },
+  blue: {
+    backgroundColor: "#85C1E9",
+  },
   timerType: {
-    fontSize: 20,
+    fontSize: 32,
     marginBottom: 20,
+    color: "white",
+    fontWeight: "bold",
+    textTransform: "uppercase",
   },
   timer: {
-    fontSize: 40,
+    fontSize: 48,
     marginBottom: 20,
+    color: "yellow",
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    width: "100%",
   },
   button: {
     fontSize: 18,
     color: "#FFFFFF",
-    backgroundColor: "#007BFF",
+    backgroundColor: "#B22222",
     padding: 10,
     borderRadius: 5,
     marginBottom: 10,
+    textTransform: "uppercase",
+  },
+  tomatoImage: {
+    width: 300,
+    height: 300,
   },
 });
 
